@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html class="h-100">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Iris RandomForest</title>
+	<meta name="Description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}" rel="stylesheet">
+</head>
+
+<body class="bg-dark h-100">
+<div class="container h-100">
+	<div class="row h-100 justify-content-center align-items-center">
+		<div class="col-12">
+			<div class="row">
+				<div class="col-12">
+					<h1 class="text-center text-white font-weight-bold display-4 mb-5">IRIS PREDICTION</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="card bg-dark border-light text-white h-100">
+						<form action="predict" method="POST" id="IrisData">
+							<div class="card-header d-flex align-items-center">
+								<h4 class="m-0">Iris Data</h4>
+							</div>
+							<div class="card-body">
+								<div class="form-group">
+									<label for="SepalLengthCm">Sepal Length</label>
+									<label class="float-right" id="SepalLengthCmLabel">0 cm</label>
+									<input type="range" min="0" max="10" value="0" step="0.1" name="SepalLengthCm"
+									       class="custom-range" id="SepalLengthCm" oninput="showVal(this)">
+								</div>
+								<div class="form-group">
+									<label for="SepalWidthCm">Sepal Width</label>
+									<label class="float-right" id="SepalWidthCmLabel">0 cm</label>
+									<input type="range" min="0" max="5" value="0" step="0.1" name="SepalWidthCm"
+									       class="custom-range" id="SepalWidthCm" oninput="showVal(this)">
+								</div>
+								<div class="form-group">
+									<label for="PetalLengthCm">Petal Length</label>
+									<label class="float-right" id="PetalLengthCmLabel">0 cm</label>
+									<input type="range" min="0" max="7" value="0" step="0.1" name="PetalLengthCm"
+									       class="custom-range" id="PetalLengthCm" oninput="showVal(this)">
+								</div>
+								<div class="form-group mb-0">
+									<label for="PetalWidthCm">Petal Width</label>
+									<label class="float-right" id="PetalWidthCmLabel">0 cm</label>
+									<input type="range" min="0" max="3" value="0" step="0.1" name="PetalWidthCm"
+									       class="custom-range" id="PetalWidthCm" oninput="showVal(this)">
+								</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" class="btn btn-primary form-control">Predict</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="card bg-dark border-light text-white text-center h-100">
+						<div class="card-header d-flex align-items-center">
+							<h4 class="m-0">Iris Species</h4>
+						</div>
+						<div class="card-body">
+							<div class="row h-100 justify-content-center align-items-center">
+								<div class="col-12">
+									<h1 class="text-white font-weight-bold display-4" id="Species"></h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="{{ url_for('static', filename='jquery/jquery-3.4.1.js') }}"></script>
+<script src="{{ url_for('static', filename='popper/popper.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/bootstrap.js') }}"></script>
+<script type="text/javascript">
+		function showVal(element) {
+			$('#' + element.id).prev().text(element.value + ' cm');
+		}
+
+		$("#IrisData").submit(function(e) {
+
+			e.preventDefault();
+
+			var form = $(this);
+			console.log(form.serialize());
+			$.ajax({
+				type: form.attr('method'),
+				url: form.attr('action'),
+				data: form.serialize(),
+				success: function(data) {
+					$('#Species').text(data.Species);
+				}
+			});
+		});
+</script>
+</body>
+
+</html>
